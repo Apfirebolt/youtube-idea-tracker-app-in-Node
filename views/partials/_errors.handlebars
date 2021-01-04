@@ -1,0 +1,9 @@
+{{#if error}}
+  <div class="alert text-white px-3 py-2 bg-red-700 shadow">{{error}}</div>
+{{/if}}
+
+{{#each errors}}
+  <div class="alert text-white px-3 py-2 bg-red-700 shadow">{{text}}</div>
+{{else}}
+
+{{/each}}
