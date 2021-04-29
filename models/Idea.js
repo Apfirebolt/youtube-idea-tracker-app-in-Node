@@ -16,8 +16,40 @@ const IdeaSchema = new Schema({
     required: true
   },
   user:{
-    type: String,
-    required:true
+    type: Schema.Types.ObjectId,
+    ref:'users'
+  },
+  pictures: [{
+    name: {
+      type: String,
+      required: true
+    },
+    title: {
+      type: String,
+      required: false
+    },
+    description: {
+      type: String,
+      required: false
+    },
+  }],
+  comments: [{
+    commentBody: {
+      type: String,
+      required: true
+    },
+    commentDate:{
+      type: Date,
+      default: Date.now
+    },
+    commentUser:{
+      type: Schema.Types.ObjectId,
+      ref:'users'
+    }
+  }],
+  isPublished: {
+    type: Boolean,
+    default: false,
   },
   date: {
     type: Date,

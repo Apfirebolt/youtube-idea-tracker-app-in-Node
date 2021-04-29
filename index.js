@@ -20,7 +20,7 @@ require('./config/passport')(passport);
 // Map global promise - get rid of warning
 mongoose.Promise = global.Promise;
 // Connect to mongoose
-mongoose.connect('mongodb://mongo:27017/ideas_to_videos', {
+mongoose.connect('mongodb://localhost:27017/ideas_to_videos', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
@@ -64,6 +64,9 @@ app.use(function(req, res, next){
   res.locals.user = req.user || null;
   next();
 });
+
+// Set media folder
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 // Index Route
 app.get('/', (req, res) => {
