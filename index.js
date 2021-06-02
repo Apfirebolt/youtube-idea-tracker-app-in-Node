@@ -85,7 +85,7 @@ app.get('/about', (req, res) => {
 app.use('/ideas', ideas);
 app.use('/users', users);
 
-const port = 4000;
+const port = 80;
 
 app.listen(port, () =>{
   console.log(`Server started on port ${port}`);
