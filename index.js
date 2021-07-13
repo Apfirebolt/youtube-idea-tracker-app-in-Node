@@ -43,11 +43,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Method override middleware
 // app.use(methodOverride('_method'));
 
-// Express session midleware
+const MongoDBStore = require('connect-mongodb-session')(session);
+
+// Sessions to be stored in mongodb database
+const store = new MongoDBStore({
+  uri: 'mongodb://localhost:27017/ideas_to_videos',
+  collection: 'sessions'
+});
+
+// Express session middleware
 app.use(session({
-  secret: 'secret',
-  resave: true,
-  saveUninitialized: true
+  secret: 'app_secret',
+  resave: false,
+  saveUninitialized: false,
+  httpOnly: true, 
+  store: store, /* store session data in mongodb */ 
+  cookie: { path: '/', httpOnly: true, maxAge: 36000000}
 }));
 
 // Passport middleware
@@ -71,6 +82,7 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 // Index Route
 app.get('/', (req, res) => {
   const title = 'Welcome';
+  console.log('Req session data ', req.session);
   res.render('index', {
     title: title
   });

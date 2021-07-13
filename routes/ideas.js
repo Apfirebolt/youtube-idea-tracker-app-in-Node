@@ -245,4 +245,54 @@ router.post('/comment/:id', ensureAuthenticated, (req, res) => {
   });
 });
 
+// Edit Comment GET request
+
+router.get('/comment/:id/edit/:commentId', ensureAuthenticated, (req, res) => {
+  Idea.findOne({
+    _id: req.params.id
+  })
+  .select({ comments: {$elemMatch: {_id: req.params.commentId}}})
+  .populate('user')
+  .lean()
+  .then(comment => {
+    if(comment.user._id != req.user.id){
+      req.flash('error_msg', 'Not Authorized');
+      res.redirect('/ideas');
+    } else {
+      res.render('ideas/edit-comment', {
+        comment: comment.comments[0]
+      });
+    }
+  })
+});
+
+// Edit comment post request
+router.post('/comment/:id/edit/:commentId', ensureAuthenticated, (req, res) => {
+  Idea.updateOne({
+    _id: request.params.id
+  }, {
+    $set: {
+        'comments.0.commentBody': req.body.comment
+    }
+  }, function (err, result) {
+    console.log(result)
+  })
+});
+
+// Delete Comment
+router.post('/comment/:id/delete/:commentId', ensureAuthenticated, (req, res) => {
+  Idea.findOne({
+    _id: req.params.id
+  })
+  .then(idea => {
+    // delete comment
+    idea.comments.pull({ _id:req.params.commentId })
+    idea.save()
+      .then(idea => {
+        req.flash('success_msg', 'Your comment is removed.');
+        res.redirect('/ideas');
+      })
+  });
+});
+
 module.exports = router;

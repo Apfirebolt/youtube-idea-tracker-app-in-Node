@@ -1,10 +1,10 @@
 {{#each ideas}}
   <div class="p-3 flex items-center justify-center" data-aos='fade-in'>
   <div class="bg-white border w-3/4 mx-auto shadow-sm px-4 py-3 rounded-lg">
-    <p class="my-2 text-xl text-blue-400">
+    <p class="my-2 text-xl text-blue-400 bg-gray-100 p-2">
       {{ title }}
     </p>
-    <p class="my-2 text-lg text-blue-400">
+    <p class="my-2 text-lg text-blue-400 bg-gray-100 p-2">
       <a href="/ideas/{{_id}}">{{ details }}</a>
     </p>
     <p class="text-gray-800 text-sm mt-2 leading-normal md:leading-relaxed whitespace-pre-line">{{ script }}</p>
@@ -21,7 +21,7 @@
         {{ commentDate }}
         </p>
         <p>
-          - {{ commentUser.first_name }}
+          - {{ commentUser.first_name }} <a href="/ideas/comment/{{../_id}}/edit/{{_id}}"><i class="icofont-edit m-3" style="font-size: 1rem"></i></a>
         </p>
        </div>
       </div>
