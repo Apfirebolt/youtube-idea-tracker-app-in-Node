@@ -267,9 +267,9 @@ router.get('/comment/:id/edit/:commentId', ensureAuthenticated, (req, res) => {
 });
 
 // Edit comment post request
-router.post('/comment/:id/edit/:commentId', ensureAuthenticated, (req, res) => {
+router.post('/comment/edit/:id', ensureAuthenticated, (req, res) => {
   Idea.updateOne({
-    _id: request.params.id
+    _id: req.params.id
   }, {
     $set: {
         'comments.0.commentBody': req.body.comment

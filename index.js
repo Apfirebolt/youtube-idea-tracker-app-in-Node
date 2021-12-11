@@ -20,7 +20,7 @@ require('./config/passport')(passport);
 // Map global promise - get rid of warning
 mongoose.Promise = global.Promise;
 // Connect to mongoose
-mongoose.connect('mongodb://mongo:27017/ideas_to_videos', {
+mongoose.connect('mongodb://localhost/ideas_to_videos', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
@@ -47,7 +47,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 // Sessions to be stored in mongodb database
 const store = new MongoDBStore({
-  uri: 'mongodb://localhost:27017/ideas_to_videos',
+  uri: 'mongodb://localhost/ideas_to_videos',
   collection: 'sessions'
 });
 
@@ -82,7 +82,6 @@ app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 // Index Route
 app.get('/', (req, res) => {
   const title = 'Welcome';
-  console.log('Req session data ', req.session);
   res.render('index', {
     title: title
   });
