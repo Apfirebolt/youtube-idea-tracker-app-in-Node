@@ -15,7 +15,7 @@ https://tailwindcomponents.com/
 
 ## Authors
 
-* **Amit Prafulla (APFirebolt)** - (http://amitprafull.com/)
+* **Amit Prafulla (APFirebolt)** - (https://apgiiit.com/)
 
 ## Project setup
 Since this project uses Mongodb as noSQL database. MongoDB needs to be configured on your system. After configuring mongoDB, install npm packages. For templating engine, it uses express handlebars.
