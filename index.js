@@ -21,7 +21,7 @@ require('./config/passport')(passport);
 // Map global promise - get rid of warning
 mongoose.Promise = global.Promise;
 // Connect to mongoose
-mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/ideas_to_videos', {
+mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
@@ -48,7 +48,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 // Sessions to be stored in mongodb database
 const store = new MongoDBStore({
-  uri: 'mongodb://localhost/ideas_to_videos',
+  uri: process.env.MONGO_URL,
   collection: 'sessions'
 });
 
