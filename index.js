@@ -1,14 +1,15 @@
 const express = require('express');
 const path = require('path');
 const exphbs  = require('express-handlebars');
-const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv')
 
 const app = express();
+dotenv.config()
 
 // Load routes
 const ideas = require('./routes/ideas.js');
@@ -20,7 +21,7 @@ require('./config/passport')(passport);
 // Map global promise - get rid of warning
 mongoose.Promise = global.Promise;
 // Connect to mongoose
-mongoose.connect('mongodb://localhost/ideas_to_videos', {
+mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/ideas_to_videos', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
