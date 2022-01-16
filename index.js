@@ -99,6 +99,6 @@ app.use('/users', users);
 
 const port = 5000;
 
-app.listen(port, () =>{
+app.listen(port || process.env.PORT, () =>{
   console.log(`Server started on port ${port}`);
 });
