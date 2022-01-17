@@ -44,7 +44,7 @@ router.post('/register', (req, res) => {
   }
 
   if(errors.length > 0){
-    res.render('auth/register', {
+    res.render('users/register', {
       errors: errors,
       first_name: req.body.first_name,
       last_name: req.body.last_name,
@@ -57,7 +57,7 @@ router.post('/register', (req, res) => {
       .then(user => {
         if(user){
           req.flash('error_msg', 'Email already exists.');
-          res.redirect('/auth/register');
+          res.redirect('/users/register');
         } else {
           const newUser = new User({
             first_name: req.body.first_name,
