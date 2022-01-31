@@ -1,13 +1,21 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const AWS = require("aws-sdk");
 const router = express.Router();
 const multer = require('multer');
+const multerS3 = require('multer-s3');
 const path = require('path');
 const {ensureAuthenticated} = require('../helpers/auth');
 
 // Load Idea Model
 require('../models/Idea');
 const Idea = mongoose.model('ideas');
+
+const s3Config = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  Bucket: process.env.AWS_BUCKET_NAME
+});
 
 // Multer upload functions
 const storage = multer.diskStorage({
@@ -22,6 +30,14 @@ const storage = multer.diskStorage({
   },
 })
 
+const multerS3Config = multerS3({
+  s3: s3Config,
+  bucket: process.env.AWS_BUCKET_NAME,
+  key: function (req, file, cb) {
+      cb(null, new Date().toISOString() + '-' + file.originalname)
+  }
+});
+
 function checkFileType(file, cb) {
   const filetypes = /jpg|jpeg|png/
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
@@ -35,7 +51,8 @@ function checkFileType(file, cb) {
 }
 
 const upload = multer({
-  storage,
+  // storage,
+  storage: multerS3Config,
   fileFilter: function (req, file, cb) {
     checkFileType(file, cb)
   },
@@ -43,6 +60,16 @@ const upload = multer({
 
 // Idea Index Page
 router.get('/', ensureAuthenticated, (req, res) => {
+  // const s3 = new AWS.S3();
+
+  // (async () => {
+  //   await s3.putObject({
+  //     Body: "Hello Frank",
+  //     Bucket: "firebolt-file-uploads",
+  //     Key: "dragon.txt",
+  //   }).promise();
+  // })();
+
   const fadeEffects = ['fade-up', 'fade-right', 'fade-down', 'fade-left', 'fade-up-right', 'fade-up-left']
   Idea.find({user: req.user.id})
     .lean()
@@ -192,7 +219,7 @@ router.post('/pictures/:id', upload.single('file'), ensureAuthenticated, (req, r
     const newPicture = {
       title: req.body.title,
       description: req.body.description,
-      name: req.file.filename
+      name: req.file.key
     }
     // Add to pictures array
     idea.pictures.unshift(newPicture);
