@@ -127,7 +127,6 @@ router.get('/:id', ensureAuthenticated, (req, res) => {
   });
 });
 
-
 // Delete Idea Form
 router.get('/delete/:id', ensureAuthenticated, (req, res) => {
   Idea.findOne({
