@@ -295,14 +295,24 @@ router.get('/comment/:id/edit/:commentId', ensureAuthenticated, (req, res) => {
 // Edit comment post request
 router.post('/comment/edit/:id', ensureAuthenticated, (req, res) => {
   Idea.updateOne({
-    _id: req.params.id
-  }, {
-    $set: {
+      _id: req.params.id
+    }, {
+      $set: {
         'comments.0.commentBody': req.body.comment
-    }
-  }, function (err, result) {
-    console.log(result)
-  })
+      }
+    })
+    .then(result => {
+      console.log(result);
+      console.log(req.body.comment);
+      req.flash('success_msg', 'Comment updated successfully');
+      res.redirect('back');
+    })
+    .catch(err => {
+      console.error(err);
+      // Handle the error, maybe send an error response
+      req.flash('error_msg', 'Error updating comment');
+      res.redirect('back');
+    });
 });
 
 // Delete Comment
