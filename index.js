@@ -21,16 +21,12 @@ require('./config/passport')(passport);
 // Map global promise - get rid of warning
 mongoose.Promise = global.Promise;
 // Connect to mongoose
-mongoose.connect(process.env.MONGO_URL, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log(err));
 
 // Handlebars Middleware
-app.engine('handlebars', exphbs({
+app.engine('handlebars', exphbs.engine({
   defaultLayout: 'main'
 }));
 app.set('view engine', 'handlebars');

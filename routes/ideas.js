@@ -30,13 +30,13 @@ const storage = multer.diskStorage({
   },
 })
 
-const multerS3Config = multerS3({
-  s3: s3Config,
-  bucket: process.env.AWS_BUCKET_NAME,
-  key: function (req, file, cb) {
-      cb(null, new Date().toISOString() + '-' + file.originalname)
-  }
-});
+// const multerS3Config = multerS3({
+//   s3: s3Config,
+//   bucket: process.env.AWS_BUCKET_NAME,
+//   key: function (req, file, cb) {
+//       cb(null, new Date().toISOString() + '-' + file.originalname)
+//   }
+// });
 
 function checkFileType(file, cb) {
   const filetypes = /jpg|jpeg|png/
@@ -51,8 +51,8 @@ function checkFileType(file, cb) {
 }
 
 const upload = multer({
-  // storage,
-  storage: multerS3Config,
+  storage,
+  // storage: multerS3Config,
   fileFilter: function (req, file, cb) {
     checkFileType(file, cb)
   },
